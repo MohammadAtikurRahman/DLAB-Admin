@@ -73,6 +73,41 @@ app.post('/video-info', async (req, res) => {
 
 
 
+app.get('/get-pc', async (req, res) => {
+  try {
+    const pcData = await AllTime.find({});
+    res.json(pcData);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Define the 'get-video' endpoint
+app.get('/get-video', async (req, res) => {
+  try {
+    const videoData = await VideoInfo.find({});
+    res.json(videoData);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
