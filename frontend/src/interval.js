@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from "react";
 
+import AllIntervalDownload from "./allintervaldownload";
+
+
 function Interval() {
   const [intervalData, setIntervalData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isTableVisible, setIsTableVisible] = useState(false);
+
+
+
+
   const baseUrl = process.env.REACT_APP_URL; // Ensure your environment variable is set
 
   useEffect(() => {
@@ -52,9 +59,7 @@ function Interval() {
           </button>
         </div>
         <div className="col-6">
-          <button className="btn btn-danger w-100">
-            ALL Interval Download
-          </button>
+          <AllIntervalDownload/>
         </div>
       </div>
       {error && <div style={{ color: "red" }}>{error}</div>}

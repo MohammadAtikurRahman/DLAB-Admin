@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import AllVideoDownload from './allvideodownload';
 
 function Video() {
   const [videoData, setVideoData] = useState([]);
@@ -42,7 +43,7 @@ function Video() {
           </button>
         </div>
         <div className='col-6'>
-          <button className='btn btn-danger w-100'>ALL Video Download</button>
+         <AllVideoDownload/>
         </div>
       </div>
       

@@ -1,11 +1,16 @@
 
 import React, { useState } from 'react';
 
+import AllSchoolDownload from './allschooldownload'
+
 function Pc() {
   const [pcData, setPcData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isTableVisible, setIsTableVisible] = useState(false);
+
+
+
   const baseUrl = process.env.REACT_APP_URL;
 
   console.log(process.env.REACT_APP_URL);
@@ -42,8 +47,8 @@ function Pc() {
       </button>
         </div>
          <div className='col-6' >
-         <button className='btn btn-danger w-100'>ALL PC Download</button>
-
+         {/* <button className='btn btn-danger w-100'>ALL PC Download</button> */}
+           <AllSchoolDownload/>
          </div>
 
       </div>
