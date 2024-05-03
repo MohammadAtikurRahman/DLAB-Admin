@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Fuse from 'fuse.js';
 import './index.css';  // Make sure your CSS handles the layout correctly.
 
+import UploadPC from './uploadpc';
+
 function SchoolwisePC() {
     const [schoolData, setSchoolData] = useState([]);
     const [selectedSchool, setSelectedSchool] = useState(null);
@@ -73,6 +75,9 @@ function SchoolwisePC() {
 
     return (
         <div className="container mt-5">
+        
+            <UploadPC/>
+<br></br>
             <input
                 type="text"
                 className="form-control mb-3"
