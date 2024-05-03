@@ -35,18 +35,19 @@ function UploadPC() {
     };
 
     return (
-        <div>
-
-
-            
-            <h2>Upload PC Data</h2>
-            <input type="file" multiple onChange={handleFileChange} className="form-control-file" />
-            <button className=' mt-3' onClick={handleUpload}>Upload</button>
-     
-     
-     
-     
-        </div>
+        <div className="input-group">
+        <input
+          type="file"
+          className="form-control"
+          id="inputGroupFile04"
+          aria-describedby="inputGroupFileAddon04"
+          aria-label="Upload"
+          onChange={handleFileChange}
+        />
+        <button className="btn btn-danger" type="button" id="inputGroupFileAddon04">
+          UPLOAD
+        </button>
+      </div>
     );
 }
 

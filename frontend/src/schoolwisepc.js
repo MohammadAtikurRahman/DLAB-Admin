@@ -76,7 +76,7 @@ function SchoolwisePC() {
     return (
         <div className="container mt-5">
         
-            <UploadPC/>
+            {/* <UploadPC/> */}
 <br></br>
             <input
                 type="text"
