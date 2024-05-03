@@ -33,7 +33,6 @@ function Home() {
           <h5 style={{color:"white"}}>DLAB</h5>
         </div>
         <div className="list-group text-center p-3">
-        <UploadPC/>
 
           <hr></hr>
           <button className="btn list-group-item list-group-item-action" onClick={handlePCClick}>PC</button>
@@ -67,8 +66,18 @@ function Home() {
           </div>
         </nav>
         <div className="container mt-3">
+
+        <UploadPC/>
+
+         <br></br>
+
           {view === 'pc' ? (
             <div role="alert">
+
+                      
+
+
+
               <Pc/>
               <Schoolwisepc/>
             </div>

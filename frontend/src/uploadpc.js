@@ -1,53 +1,43 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import Papa from 'papaparse';
 
 function UploadPC() {
-    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [parsedData, setParsedData] = useState([]);
 
     const handleFileChange = (e) => {
-        setSelectedFiles(e.target.files);
-    };
-
-    const handleUpload = async () => {
-        if (selectedFiles.length === 0) {
-            alert("Please select one or more CSV files to upload.");
-            return;
-        }
-
-        const formData = new FormData();
-        Array.from(selectedFiles).forEach((file) => {
-            formData.append("files", file);
-        });
-
-        try {
-            const response = await axios.post('http://localhost:4300/pc-info', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
+        const file = e.target.files[0]; // Get the first file only for simplicity
+        if (file) {
+            Papa.parse(file, {
+                header: true, // Consider the first row of the CSV as headers
+                skipEmptyLines: true,
+                complete: function(results) {
+                    setParsedData(results.data); // Set the parsed data to state
                 }
             });
-            console.log("Upload successful:", response.data);
-            alert("Upload successful!");
-            // Optionally, you can handle the response or update state here
-        } catch (error) {
-            console.error("Upload error:", error);
-            alert("An error occurred while uploading. Please try again.");
         }
     };
 
     return (
-        <div className="input-group">
-        <input
-          type="file"
-          className="form-control"
-          id="inputGroupFile04"
-          aria-describedby="inputGroupFileAddon04"
-          aria-label="Upload"
-          onChange={handleFileChange}
-        />
-        <button className="btn btn-danger" type="button" id="inputGroupFileAddon04">
-          UPLOAD
-        </button>
-      </div>
+        <div>
+            <div className="input-group">
+                <input
+                    type="file"
+                    accept=".csv"
+                    className="form-control"
+                    id="inputGroupFile04"
+                    aria-describedby="inputGroupFileAddon04"
+                    aria-label="Upload"
+                    onChange={handleFileChange}
+                />
+            </div>
+
+            {parsedData.length > 0 && (
+                <div>
+                    <h2>Parsed CSV Data</h2>
+                    <pre>{JSON.stringify(parsedData, null, 2)}</pre>
+                </div>
+            )}
+        </div>
     );
 }
 
