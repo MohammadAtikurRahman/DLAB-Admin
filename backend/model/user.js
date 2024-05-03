@@ -30,7 +30,22 @@ const allVideoSchema = new mongoose.Schema({
 });
 
 
+const interValSchema = new mongoose.Schema({
+  dayid: Number,
+ 
+  starttime: String,
+  totaltime: Number,
+  lasttime: String,
+  pcname: String,
+  eiin: Number,
+  schoolname: String,
+  labnum: Number,
+  pcnum: Number,
+});
+
+
 module.exports = {
   AllTime: mongoose.model("AllTime", allTimeSchema),
   VideoInfo: mongoose.model("VideoInfo", allVideoSchema),
+  IntervalInfo: mongoose.model("Intervalinfo",interValSchema)
 };

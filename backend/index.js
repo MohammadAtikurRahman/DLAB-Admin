@@ -24,7 +24,7 @@ app.use(express.static("uploads"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const { AllTime, VideoInfo } = require("./model/user.js");
+const { AllTime, VideoInfo,IntervalInfo } = require("./model/user.js");
 
 app.use((req, res, next) => {
     console.log(`${req.method} request for '${req.url}' from ${req.ip}`);
@@ -37,6 +37,10 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
     res.send('Welcome to the Home Page!');
 });
+
+
+
+
 
 app.post('/pc-info', async (req, res) => {
   // Expect req.body to be an array of objects
@@ -51,6 +55,24 @@ app.post('/pc-info', async (req, res) => {
       res.status(400).send(error.message); // If an error occurs, send the error message
   }
 });
+
+app.post('/inter-info', async (req, res) => {
+  // Expect req.body to be an array of objects
+  if (!Array.isArray(req.body)) {
+      return res.status(400).send("Expected an array of objects");
+  }
+
+  try {
+      const savedTimes = await IntervalInfo.insertMany(req.body); // Bulk insert the array of objects
+      res.status(201).send(savedTimes); // Return the array of saved documents
+  } catch (error) {
+      res.status(400).send(error.message); // If an error occurs, send the error message
+  }
+});
+
+
+
+
 
 
 app.post('/video-info', async (req, res) => {
