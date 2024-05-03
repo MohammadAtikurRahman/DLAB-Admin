@@ -113,6 +113,14 @@ app.get('/get-video', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+app.get('/get-interval', async (req, res) => {
+  try {
+    const videoData = await IntervalInfo.find({});
+    res.json(videoData);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 
 
