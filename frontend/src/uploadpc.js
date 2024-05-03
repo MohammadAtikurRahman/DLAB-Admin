@@ -4,6 +4,7 @@ import Papa from 'papaparse';
 
 function UploadPC() {
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const baseUrl = process.env.REACT_APP_URL;
 
     const handleFileChange = (e) => {
         setSelectedFiles(e.target.files);
@@ -37,7 +38,7 @@ function UploadPC() {
     };
 
     const sendDataToServer = (data) => {
-        axios.post('http://localhost:4300/pc-info', data)
+        axios.post(`${baseUrl}/pc-info`, data)
             .then(response => {
                 alert('Data uploaded successfully!');
                 console.log(response.data);

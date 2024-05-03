@@ -4,6 +4,7 @@ import Papa from 'papaparse';
 
 function UploadVideoData() {
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const baseUrl = process.env.REACT_APP_URL;
 
     const handleFileChange = (e) => {
         setSelectedFiles(e.target.files);
@@ -41,7 +42,7 @@ function UploadVideoData() {
     };
 
     const sendDataToServer = (data) => {
-        axios.post('http://localhost:4300/video-info', data)
+        axios.post(`${baseUrl}/video-info`, data)
             .then(response => {
                 alert('Video data uploaded successfully!');
                 console.log(response.data);
