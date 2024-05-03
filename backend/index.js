@@ -56,40 +56,6 @@ app.post('/pc-info', async (req, res) => {
   }
 });
 
-app.post('/pc-info1', async (req, res) => {
-  // Expect req.files to contain an array of files
-  if (!req.files || req.files.length === 0) {
-      return res.status(400).send("No files were uploaded.");
-  }
-
-  const files = req.files.files; // Assuming your file field name is 'files'
-
-  // Assuming you're using csv-parse to parse CSV files
-  // You need to install the 'csv-parse' package via npm or yarn
-  const parse = require('csv-parse');
-  
-  try {
-      const parsedDataArray = [];
-
-      for (const file of files) {
-          const csvData = file.data.toString('utf8');
-          const parsedData = await parse(csvData, { columns: true });
-          parsedDataArray.push(parsedData);
-      }
-
-      // Assuming you have a MongoDB model named 'AllTime'
-      // Make sure to import it and set up your MongoDB connection properly
-      const savedData = await AllTime.insertMany(parsedDataArray.flat());
-      res.status(201).send(savedData);
-  } catch (error) {
-      res.status(400).send(error.message);
-  }
-});
-
-
-
-
-
 
 app.post('/inter-info', async (req, res) => {
   // Expect req.body to be an array of objects

@@ -1,43 +1,64 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import Papa from 'papaparse';
 
 function UploadPC() {
-    const [parsedData, setParsedData] = useState([]);
+    const [selectedFiles, setSelectedFiles] = useState([]);
 
     const handleFileChange = (e) => {
-        const file = e.target.files[0]; // Get the first file only for simplicity
-        if (file) {
+        setSelectedFiles(e.target.files);
+    };
+
+    const handleUpload = () => {
+        if (selectedFiles.length === 0) {
+            alert("Please select one or more CSV files to upload.");
+            return;
+        }
+
+        Array.from(selectedFiles).forEach(file => {
             Papa.parse(file, {
-                header: true, // Consider the first row of the CSV as headers
+                header: true,
                 skipEmptyLines: true,
-                complete: function(results) {
-                    setParsedData(results.data); // Set the parsed data to state
+                complete: async (results) => {
+                    const formattedData = results.data.map(item => ({
+                        pcname: item["PC Name"],
+                        eiin: parseInt(item.EIIN),
+                        schoolname: item["School Name"],
+                        labnum: parseInt(item.Lab),
+                        pcnum: parseInt(item.PC),
+                        starttime: `${item["Start Date"]} ${item["Start Time"]}`,
+                        totaltime: parseInt(item.Duration),
+                        lasttime: `${item["End Date"]} ${item["End Time"]}`
+                    }));
+                    sendDataToServer(formattedData);
                 }
             });
-        }
+        });
+    };
+
+    const sendDataToServer = (data) => {
+        axios.post('http://localhost:4300/pc-info', data)
+            .then(response => {
+                alert('Data uploaded successfully!');
+                console.log(response.data);
+            })
+            .catch(error => {
+                alert('Failed to upload data: ' + error.message);
+                console.error(error);
+            });
     };
 
     return (
-        <div>
-            <div className="input-group">
-                <input
-                    type="file"
-                    accept=".csv"
-                    className="form-control"
-                    id="inputGroupFile04"
-                    aria-describedby="inputGroupFileAddon04"
-                    aria-label="Upload"
-                    onChange={handleFileChange}
-                />
-            </div>
-
-            {parsedData.length > 0 && (
-                <div>
-                    <h2>Parsed CSV Data</h2>
-                    <pre>{JSON.stringify(parsedData, null, 2)}</pre>
-                </div>
-            )}
+        // <div>
+        //     <input type="file" onChange={handleFileChange} accept=".csv" multiple />
+        //     <button onClick={handleUpload}>Upload CSV</button>
+        // </div>
+        <div className="container mt-5">
+        <div className="input-group mb-3">
+            <input type="file" className="form-control" id="inputGroupFile02" onChange={handleFileChange} accept=".csv" multiple />
+            <button className="btn btn-primary" type="button" onClick={handleUpload}>Upload CSV</button>
         </div>
+    </div>
     );
 }
 
