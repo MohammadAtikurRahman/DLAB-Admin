@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Fuse from 'fuse.js';
-import './index.css';
+import './index.css';  // Make sure your CSS handles the layout correctly.
 
 function SchoolwisePC() {
     const [schoolData, setSchoolData] = useState([]);
@@ -37,6 +37,39 @@ function SchoolwisePC() {
         setSelectedSchool(matches);
     };
 
+    const downloadCSV = (schoolInfo) => {
+        if (!schoolInfo.length) return; // Early return if no school info
+    
+        const headers = ["School Name", "PC Name", "Start Time", "Last Time", "Total Time (s)", "Lab", "PC", "EIIN"];
+        const csvContent = [
+            headers.join(","),
+            ...schoolInfo.map(item => [
+                `"${item.schoolname.replace(/"/g, '""')}"`,
+                `"${item.pcname.replace(/"/g, '""')}"`,
+                `"${item.starttime}"`,
+                `"${item.lasttime}"`,
+                `"${item.totaltime}"`,
+                `"${item.labnum}"`,
+                `"${item.pcnum}"`,
+                `"${item.eiin}"`
+            ].join(","))
+        ].join("\n");
+    
+        const sanitizedSchoolName = schoolInfo[0].schoolname.replace(/[/\\?%*:|"<>]/g, '');
+        const sanitizedEIIN = schoolInfo[0].eiin.toString().replace(/[/\\?%*:|"<>]/g, '');
+        const filename = `${sanitizedSchoolName}-${sanitizedEIIN}-data.csv`;
+    
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", filename);
+        link.style.visibility = "hidden";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return (
         <div className="container mt-5">
             <input
@@ -48,9 +81,14 @@ function SchoolwisePC() {
             />
 
             <ul className="list-group">
-                {Array.from(new Set(schoolData.map(item => `${item.schoolname} EIIN: ${item.eiin}`))).map((school, index) => (
-                    <li key={index} className=" list-group-item list-group-item-action list-group-item-primary" onClick={() => handleSearch(school)}>
+                {Array.from(new Set(schoolData.map(item => `${item.schoolname} (EIIN: ${item.eiin})`))).map((school, index) => (
+                    <li key={index} className="list-group-item list-group-item-action list-group-item-primary d-flex justify-content-between align-items-center" onClick={() => handleSearch(school)}>
                         {school}
+                        <button className="btn btn-secondary" onClick={(e) => {
+                            e.stopPropagation(); // Prevent li onClick from firing
+                            const schoolInfo = schoolData.filter(s => `${s.schoolname} (EIIN: ${s.eiin})` === school);
+                            downloadCSV(schoolInfo);
+                        }}>Download Info</button>
                     </li>
                 ))}
             </ul>
@@ -66,8 +104,8 @@ function SchoolwisePC() {
                                 <th>Start Time</th>
                                 <th>Last Time</th>
                                 <th>Total Time (s)</th>
-                                <th>Lab </th>
-                                <th>PC </th>
+                                <th>Lab</th>
+                                <th>PC</th>
                                 <th>EIIN</th>
                             </tr>
                         </thead>
