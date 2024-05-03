@@ -41,7 +41,7 @@ function Home() {
           <button className="btn list-group-item list-group-item-action" onClick={handleIntervalClick}>Interval</button>
           <hr></hr>
 
-          <button className="btn list-group-item list-group-item-action" onClick={handleSchoolMapClick}>School Map</button>
+          {/* <button className="btn list-group-item list-group-item-action" onClick={handleSchoolMapClick}>School Map</button> */}
         </div>
       </div>
       <div className="main-content flex-grow-1">

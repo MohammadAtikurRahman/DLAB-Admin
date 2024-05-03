@@ -6,11 +6,12 @@ function SchoolwisePC() {
     const [schoolData, setSchoolData] = useState([]);
     const [selectedSchool, setSelectedSchool] = useState(null);
     const [query, setQuery] = useState('');
+    const baseUrl = process.env.REACT_APP_URL;
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:4300/get-pc');
+                const response = await fetch(`${baseUrl}/get-pc`);
                 if (response.ok) {
                     const data = await response.json();
                     setSchoolData(data);
@@ -57,7 +58,7 @@ function SchoolwisePC() {
     
         const sanitizedSchoolName = schoolInfo[0].schoolname.replace(/[/\\?%*:|"<>]/g, '');
         const sanitizedEIIN = schoolInfo[0].eiin.toString().replace(/[/\\?%*:|"<>]/g, '');
-        const filename = `${sanitizedSchoolName}-${sanitizedEIIN}-data.csv`;
+        const filename = `${sanitizedSchoolName}-${sanitizedEIIN}-PCs.csv`;
     
         const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
         const url = URL.createObjectURL(blob);

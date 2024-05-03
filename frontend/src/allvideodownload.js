@@ -4,12 +4,13 @@ function AllVideoDownload() {
   const [videoData, setVideoData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const baseUrl = process.env.REACT_APP_URL;
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await fetch("http://localhost:4300/get-video");
+        const response = await fetch(`${baseUrl}/get-video`);
         if (response.ok) {
           const data = await response.json();
           setVideoData(data);

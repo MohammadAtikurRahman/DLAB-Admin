@@ -56,6 +56,9 @@ app.post('/pc-info', async (req, res) => {
   }
 });
 
+
+
+
 app.post('/inter-info', async (req, res) => {
   // Expect req.body to be an array of objects
   if (!Array.isArray(req.body)) {
@@ -115,7 +118,7 @@ app.get('/get-video', async (req, res) => {
 });
 app.get('/get-interval', async (req, res) => {
   try {
-    const videoData = await IntervalInfo.find({});
+    const videoData = await VideoInfo.find({});
     res.json(videoData);
   } catch (err) {
     res.status(500).json({ message: err.message });

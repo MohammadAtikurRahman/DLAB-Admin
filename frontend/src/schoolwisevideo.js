@@ -104,11 +104,12 @@ function SchoolwiseVideo() {
     const [videoData, setVideoData] = useState([]);
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [query, setQuery] = useState('');
+    const baseUrl = process.env.REACT_APP_URL;
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:4300/get-video');
+                const response = await fetch(`${baseUrl}/get-video`);
                 if (response.ok) {
                     const data = await response.json();
                     setVideoData(data);
@@ -156,7 +157,7 @@ function SchoolwiseVideo() {
     
         const sanitizedSchoolName = videoInfo[0].schoolname.replace(/[/\\?%*:|"<>]/g, '');
         const sanitizedEIIN = videoInfo[0].eiin.toString().replace(/[/\\?%*:|"<>]/g, '');
-        const filename = `${sanitizedSchoolName}-${sanitizedEIIN}-videos.csv`;
+        const filename = `${sanitizedSchoolName}-${sanitizedEIIN}-Videos.csv`;
     
         const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
         const url = URL.createObjectURL(blob);

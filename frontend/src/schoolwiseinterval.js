@@ -106,11 +106,12 @@ function SchoolwiseInterval() {
     const [intervalData, setIntervalData] = useState([]);
     const [selectedIntervals, setSelectedIntervals] = useState(null);
     const [query, setQuery] = useState('');
+    const baseUrl = process.env.REACT_APP_URL;
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:4300/get-interval');
+                const response = await fetch(`${baseUrl}/get-interval`);
                 if (response.ok) {
                     const data = await response.json();
                     setIntervalData(data);
@@ -157,7 +158,7 @@ function SchoolwiseInterval() {
     
         const sanitizedSchoolName = schoolInfo[0].schoolname.replace(/[/\\?%*:|"<>]/g, '');
         const sanitizedEIIN = schoolInfo[0].eiin.toString().replace(/[/\\?%*:|"<>]/g, '');
-        const filename = `${sanitizedSchoolName}-${sanitizedEIIN}-data.csv`;
+        const filename = `${sanitizedSchoolName}-${sanitizedEIIN}-Intervals.csv`;
     
         const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
         const url = URL.createObjectURL(blob);
